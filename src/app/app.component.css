@@ -1,0 +1,60 @@
+.main{
+    width: 100%;
+    margin:0 auto;
+    text-align: center;
+    border:2px solid #efefef;
+    padding-bottom: 20px;
+}
+h1{
+    width:100%;
+    padding: 10px 0px;
+    background: darkcyan;
+    text-align: center;
+    color:white;
+    margin: 0px;
+}
+.menu{
+    list-style: none;
+    width: 100%;
+    background: mediumturquoise;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+}
+.menu li{
+    padding: 10px 20px;
+    float: left;
+    cursor: pointer;
+}
+.menu li:hover{
+    background: darkcyan;
+}
+.menu li a{
+    text-decoration: none;
+}
+.menu li a:hover{
+    color:white;
+}
+button{
+    padding: 10px 20px;
+    background:darkcyan;
+    color: #fff;
+    border: 1px solid;
+    width:100%;
+}
+input,textarea{
+    padding: 10px;
+    width: 92%;
+    margin-top: 10px;
+}
+label{
+    margin-top: 10px;
+}
+select{
+    padding: 10px;
+    width: 95%;
+    margin-top: 10px;
+}
+.red_color{
+    color:red;
+}
