@@ -4,24 +4,35 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
+In this git version, node module did not upload. So to set up this project, you need to do the following steps :
+
+in the command prompt, go to the directory of the project.
+
+run 'npm update'
+It will take a few minutes and download necessary files for the node modules. 
+
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+The api is in live server so that the project can communicate perfectly. 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The api is set up at this link : http://fouraxiz.com/iformbuilder/index.php
 
-## Build
+I also uploaded the php class file. Those are in the api folder.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+And the form information is saving in the following account :
 
-## Running unit tests
+url : https://app.iformbuilder.com/exzact/dataViews.php
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+username : the.dhrubo@gmail.com
+password : Dhrubo_123456
 
-## Running end-to-end tests
+Now if you open the form id : 3715842 form name : Registration Form, you will be able to see that, from the angular the form information is saving with using the access token and the corresponding api.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Please let me know if you have any question.
+I will be available at : 
+email : the.dhrubo@gmail.com
+phone : +5754185021
 
-## Further help
+Thanks
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
