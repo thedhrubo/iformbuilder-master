@@ -110,10 +110,12 @@ class iformbuilder_api {
 
         return $this;
     }
-  public function init()//*
-    {
-        if (gettype($this->ch) !== 'resource') $this->ch = curl_init();
+
+    public function init() {//*
+        if (gettype($this->ch) !== 'resource')
+            $this->ch = curl_init();
     }
+
     /**
      * @param $url
      */
@@ -180,7 +182,6 @@ class iformbuilder_api {
      */
     private function baseCurl($url, Callable $setupOperation = null) {//*
 //        $this->init();
-
         if (!is_null($setupOperation))
             $setupOperation();
 
@@ -197,17 +198,17 @@ class iformbuilder_api {
             ));
         }
     }
-  /**
+
+    /**
      * Send Curl request
      *
      * @param null $header
      *
      * @return array
      */
-    private function request($header = null)//*
-    {
+    private function request($header = null) {//*
         $response = curl_exec($this->ch);
-        if (! is_null($header)) {
+        if (!is_null($header)) {
             $result = array('header' => '', 'body' => '');
             $header_size = curl_getinfo($this->ch, CURLINFO_HEADER_SIZE);
             $result['header'] = substr($response, 0, $header_size);
@@ -222,6 +223,7 @@ class iformbuilder_api {
 
         return array($httpStatus, $result);
     }
+
     /**
      * Check results
      *
@@ -235,8 +237,6 @@ class iformbuilder_api {
         return isset($token['access_token']) ? $token['access_token'] : $token['error'];
     }
 
- 
-
     /**
      * Converts and signs a PHP object or array into a JWT string.
      *
@@ -249,7 +249,7 @@ class iformbuilder_api {
      * @uses jsonEncode
      * @uses urlsafeB64Encode
      */
-     function encode($payload, $key, $algo = 'HS256') {//*
+    function encode($payload, $key, $algo = 'HS256') {//*
         $header = array('typ' => 'JWT', 'alg' => $algo);
 
         $header_en = $this->base64url_encode($this->jsonEncode($header));
@@ -276,7 +276,7 @@ class iformbuilder_api {
      * @return string          An encrypted message
      * @throws DomainException Unsupported algorithm was specified
      */
-     function sign($msg, $key, $method = 'HS256') {//*
+    function sign($msg, $key, $method = 'HS256') {//*
         $methods = array(
             'HS256' => 'sha256',
             'HS384' => 'sha384',
@@ -288,8 +288,6 @@ class iformbuilder_api {
         return hash_hmac($methods[$method], $msg, $key, true);
     }
 
- 
-
     /**
      * Encode a PHP object into a JSON string.
      *
@@ -298,7 +296,7 @@ class iformbuilder_api {
      * @return string          JSON representation of the PHP object or array
      * @throws DomainException Provided object could not be encoded to valid JSON
      */
-     function jsonEncode($input) {//*
+    function jsonEncode($input) {//*
         $json = json_encode($input);
         if (function_exists('json_last_error') && $errno = json_last_error()) {
             $this->_handleJsonError($errno);
@@ -308,8 +306,6 @@ class iformbuilder_api {
         return $json;
     }
 
-  
-
     /**
      * Encode a string with URL-safe Base64.
      *
@@ -317,12 +313,9 @@ class iformbuilder_api {
      *
      * @return string The base64 encode of what you passed in
      */
-   
-
-     function base64url_encode($data) {//*
+    function base64url_encode($data) {//*
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
-
 
     /**
      * Helper method to create a JSON error.
@@ -331,7 +324,7 @@ class iformbuilder_api {
      *
      * @return void
      */
-     function _handleJsonError($errno) { //*
+    function _handleJsonError($errno) { //*
         $messages = array(
             JSON_ERROR_DEPTH => 'Maximum stack depth exceeded',
             JSON_ERROR_CTRL_CHAR => 'Unexpected control character found',
@@ -341,39 +334,50 @@ class iformbuilder_api {
         isset($messages[$errno]) ? $messages[$errno] : 'Unknown JSON error: ' . $errno
         );
     }
- function saveData($data,$token) {
-          $this->token = $token;
+
+    function saveData() {
+        $data = json_decode(file_get_contents("php://input"));
+        $this->token = $this->getToken();
         $url = 'https://app.iformbuilder.com/exzact/api/v60/profiles/' . $this->profile . '/pages/' . $this->page_id . '/records';
         $fields['fields'] = array();
-       
+
         foreach ($data as $k => $v) {
             $temp = array();
             $temp['element_name'] = $k;
-            if($k=='birth_date')
-            $temp['value'] = date('Y-m-d',strtotime($v));
-            else if($k=='subscribe')
-            $temp['value'] = $v=='on' ? '1' : '0';
+            if ($k == 'birth_date')
+                $temp['value'] = date('Y-m-d', strtotime($v));
+            else if ($k == 'subscribe')
+                $temp['value'] = $v == 'on' ? '1' : '0';
             else
-            $temp['value'] = $v;
-            
+                $temp['value'] = $v;
+
             $fields['fields'][] = $temp;
         }
-        $response = $this->sendRequest($url, $this->jsonEncode($fields),true);
+        $response = $this->sendRequest($url, $this->jsonEncode($fields), true);
         $newID = json_decode($response);
-        return $newID;
+        if (is_int($newID->id) == true)
+            return json_encode(array('msg' => 'success', 'id' => $newID->id));
+        else
+            return json_encode(array('msg' => $newID));
     }
 
-    function sendRequest($url,$fields,$isPost=true) {
+    function getData(){
+        $this->token = $this->getToken();
+        $url = 'https://app.iformbuilder.com/exzact/api/v60/profiles/' . $this->profile . '/pages/' . $this->page_id . '/feed?FORMAT=JSON';
+         return $this->sendRequest($url, '', false);
+    }
+    
+    function sendRequest($url, $fields, $isPost = true) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        
-        if($isPost){
-             curl_setopt($ch, CURLOPT_POST, TRUE);
-             curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+
+        if ($isPost) {
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         }
-        
+
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             "Authorization: Bearer $this->token"
@@ -382,5 +386,53 @@ class iformbuilder_api {
         $response = curl_exec($ch);
         curl_close($ch);
         return $response;
+    }
+     function sendRequest_update($url, $fields, $isPost = true) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+        if ($isPost) {
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        }
+
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer $this->token"
+        ));
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+     function updateData() {
+        $data = json_decode(file_get_contents("php://input"));
+        $this->token = $this->getToken();
+        $url = 'https://app.iformbuilder.com/exzact/api/v60/profiles/' . $this->profile . '/pages/' . $this->page_id . '/records/'.$data->id;
+        $fields['fields'] = array();
+            unset($data->id);
+        foreach ($data as $k => $v) {
+            $temp = array();
+            $temp['element_name'] = $k;
+            if ($k == 'birth_date')
+                $temp['value'] = date('Y-m-d', strtotime($v));
+            else if ($k == 'subscribe')
+                $temp['value'] = $v == 'true' ? '1' : '0';
+            else
+                $temp['value'] = $v;
+
+            $fields['fields'][] = $temp;
+        }
+        $response = $this->sendRequest_update($url, $this->jsonEncode($fields), true);
+        $newID = json_decode($response);
+         
+        if (is_int($newID->id) == true)
+            return json_encode(array('msg' => 'success', 'id' => $newID->id));
+        else
+            return json_encode(array('msg' => $newID));
     }
 }

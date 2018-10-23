@@ -1,59 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="main">
-<div style="text-align:center;background: darkcyan;">
-    <img width="100" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-  <h1>
 
-    Welcome to {{ title }}!
-  </h1>
-
-</div>
-<div style="padding: 15px;text-align: left;">
-  <h3>Registration Form</h3>
-  <form #user="ngForm" (ngSubmit) = "saveData(user.value)">
-  <label>
-    First Name :
-  </label><br>
-  <input type="text" name="first_name" ngModel placeholder="Enter First Name"> <br>
-  <label>
-    Last Name :
-  </label><br>
-  <input type="text" name="last_name" ngModel placeholder="Enter Last Name"><br>
-  <label>
-    Username <span class="red_color">*</span>:
-  </label><br>
-  <input type="text" name="username" ngModel placeholder="Enter Username" required> <br>
-  <label>
-    Email <span class="red_color">*</span>:
-  </label><br>
-  <input type="email" name="email" ngModel placeholder="Enter Email" required> <br>
-  <label>
-    Phone Number <span class="red_color">*</span>:
-  </label><br>
-  <input type="text" (keypress) = "numberOnly($event)" (blur)="phonenumberValidation($event)" minlength=10 maxlength=10 ngModel name="phone_number" placeholder="(019) 205-5256" required> <br>
-  <label>
-    Birth Date :
-  </label><br>
-  <input type="date" name="birth_date" ngModel placeholder="Enter Birth Date"> <br>
-  <label>
-    Address :
-  </label><br>
-  <textarea name="address" ngModel placeholder="Enter Your Address"></textarea> <br>
-  <label>
-    Profession <span class="red_color">*</span>:
-  </label><br>
-  <select name="profession" ngModel required>
-    <option value="managing_director">Managing Director</option>
-    <option value="programmer">Programmer</option>
-  </select> <br>
-  <label>
-    Want to be subscriber : <input ngModel style="width:20px;" type="checkbox" name="subscribe">
-  </label>
-  <input style="width:95%" type="submit" value="Save">
-</form>
-   <br>
-</div>
-
+<div>
+  <router-outlet></router-outlet>
 
 </div>
 
